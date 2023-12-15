@@ -8,7 +8,8 @@ public class Main {
         fileProcessor.validateArguments(args);
 
         String instructionFilePath = args[0];
-        fileProcessor.processFile(instructionFilePath);
+        InstructionController instructionController = new InstructionController();
+        fileProcessor.processFile(instructionFilePath, instructionController);
 
         System.out.println("File processed successfully");
     }

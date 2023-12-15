@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class FileProcessor {
 
-    public void processFile(String filePath) {
+    public void processFile(String filePath, InstructionController instructionController) {
         try {
             FileReader fileReader = new FileReader(filePath);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -18,7 +18,6 @@ public class FileProcessor {
                 String[] arguments = new String[lineArray.length - 1];
                 System.arraycopy(lineArray, 1, arguments, 0, lineArray.length - 1);
 
-                InstructionController instructionController = new InstructionController();
                 instructionController.executeOption(option, arguments);
             }
 

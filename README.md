@@ -1,7 +1,7 @@
 # phone-stock-management
 
 ## Description
-This is a simple phone stock management system. It is possible to add, update, delete and list phones. It is also possible to search for phones by name, brand and price.
+This is a simple phone stock management system. It is possible to add, update, delete and list phoneModels. It is also possible to search for phoneModels by name, brand and price.
 
 ## Usage
 1. Download the JAR file from [here](https://some-link.com).
