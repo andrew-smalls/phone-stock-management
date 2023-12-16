@@ -70,4 +70,11 @@ public class Inventory {
         }
         return null;
     }
+
+    public void clear() {
+        for (Brand brand : brands) {
+            brand.getPhoneModels().clear();
+        }
+        brands.clear();
+    }
 }

@@ -3,6 +3,7 @@ import models.Inventory;
 import models.PhoneModel;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 /* TODO List:
 * 1. Add validation for arguments
@@ -17,7 +18,7 @@ import java.util.Arrays;
 * 10. Use constants for repeated strings
 * 11. Use constants for repeated integers
 * 12. Re-use methods when possible: update can make use of search first, for example
-*
+* 13. Admin password should be stored in a file, not in the code
 * */
 
 public class Instructions {
@@ -105,7 +106,27 @@ public class Instructions {
     }
 
     public void clear() {
+        // Get confirmation from user: Issue an input prompt for the administrator password.
+        // This does not stop the file from being processed completely.
         System.out.println("Executing clear");
+
+        Scanner scanner = new Scanner(System.in);
+
+        String adminPassword = "admin"; // Replace this with the actual admin password
+
+        System.out.println("Please enter the administrator password:");
+        String userInput = scanner.nextLine();
+
+        // Check if the entered password matches the admin password
+        if (userInput.equals(adminPassword)) {
+            System.out.println("Password correct. Proceed with administrator privileges.");
+            // Perform inventory clear with administrator privileges
+            inventory.clear();
+        } else {
+            System.out.println("Incorrect password. Access denied.");
+        }
+
+        scanner.close();
     }
 
     public void trend(String[] arguments) {

@@ -7,3 +7,5 @@ update Nokia XR21 -6
 list
 search Nokia XR21
 search Samsung S21
+clear
+list
