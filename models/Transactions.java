@@ -1,8 +1,7 @@
 package models;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class Transactions {
 
@@ -31,10 +30,14 @@ public class Transactions {
 
         HashMap<String, Integer> phoneModelSales = getPhoneModelSales(soldTransactions);
 
-        // rank the phone models by sales (in descending order)
-        HashMap<String, Integer> rankedPhoneSales = phoneModelSales.entrySet().stream()
-                .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
-                .collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), HashMap::putAll);
+        // rank the phone models by sales (use LinkedHashMap to keep the order descending - HashMap forces ascending)
+        LinkedHashMap<String, Integer> rankedPhoneSales = phoneModelSales.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue(Comparator.reverseOrder()))
+                .collect(
+                        LinkedHashMap::new,
+                        (m, e) -> m.put(e.getKey(), e.getValue()),
+                        LinkedHashMap::putAll
+                );
 
         return rankedPhoneSales;
     }
