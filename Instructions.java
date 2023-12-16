@@ -200,13 +200,7 @@ public class Instructions {
     }
 
     public void deductStock(String[] arguments) {
-        /*
-        * deduct_stock <ResellerID> <BrandName> <ModelName> <Quantity>
-        Deducts stock from the inventory when a reseller sells or dispatches a phone model.
-        "dispatching" means sending or delivering the phone model to a customer. When a reseller
-        dispatches a phone model, it means they are sending it to the intended recipient.
-        * */
-        // TODO
         System.out.println("Executing deduct stock" + Arrays.toString(arguments));
+        resellerRegistry.deductStock(arguments, transactions);
     }
 }

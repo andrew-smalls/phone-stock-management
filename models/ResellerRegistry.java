@@ -72,4 +72,26 @@ public class ResellerRegistry {
         }
         return null;
     }
+
+    public void deductStock(String[] arguments, Transactions transactions) {
+        String resellerId = arguments[0];
+        String brandName = arguments[1];
+        String modelName = arguments[2];
+        String stock = arguments[3];
+        Reseller reseller = getResellerById(Integer.parseInt(resellerId));
+        if (reseller == null) {
+            System.out.println("Reseller does not exist");
+            return;
+        }
+
+        Brand brand = new Brand();
+        brand.setName(brandName);
+        PhoneModel phoneModel = new PhoneModel();
+        phoneModel.setModelName(modelName);
+        phoneModel.setStock(Integer.parseInt(stock));
+        brand.addPhoneModel(phoneModel);
+
+        reseller.getResellerInventory().updateStock(brandName, phoneModel);
+        transactions.logTransaction(brandName, modelName, Integer.parseInt(stock), TRANSACTION_TYPE.SALE);
+    }
 }

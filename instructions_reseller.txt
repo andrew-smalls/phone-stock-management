@@ -8,4 +8,8 @@ list_resellers
 assign_phone 1 Apple iPhone15 3
 assign_phone 2 Samsung S22 2
 list
+deduct_stock 1 Apple iPhone15 1
+deduct_stock 2 Samsung S22 1
+deduct_stock 2 Samsung S22 1
 history
+trend
