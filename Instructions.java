@@ -4,6 +4,22 @@ import models.PhoneModel;
 
 import java.util.Arrays;
 
+/* TODO List:
+* 1. Add validation for arguments
+* 2. Add validation for integer overflow
+* 3. Add validation for negative stock
+* 4. Add validation for duplicate brands
+* 5. Add validation for duplicate models
+* 6. Add validation for non-existent brands
+* 7. Add validation for non-existent models
+* 8. Add validation for non-existent resellers
+* 9. Refactor repeated code
+* 10. Use constants for repeated strings
+* 11. Use constants for repeated integers
+* 12. Re-use methods when possible: update can make use of search first, for example
+*
+* */
+
 public class Instructions {
     private final Inventory inventory = new Inventory();
 
@@ -42,12 +58,12 @@ public class Instructions {
         int stockChange = Integer.parseInt(arguments[2]);
 
         if (inventory.getBrand(brandName) == null) {
-            System.out.println("Brand does not exist");
+            System.out.println("Brand does not exist in inventory");
             return;
         }
 
         if (inventory.getBrand(brandName).getPhoneModel(modelName) == null) {
-            System.out.println("Model does not exist");
+            System.out.println("Model does not exist in inventory");
             return;
         }
         int initialStock = inventory.getBrand(brandName).getPhoneModel(modelName).getStock();
@@ -65,6 +81,27 @@ public class Instructions {
 
     public void search(String[] arguments) {
         System.out.println("Executing search" + Arrays.toString(arguments));
+
+        validateSearchArguments(arguments);
+
+        String brandName = arguments[0];
+        String modelName = arguments[1];
+
+        if (inventory.getBrand(brandName) == null) {
+            System.out.println("Brand does not exist in inventory");
+            return;
+        }
+
+        if (inventory.getBrand(brandName).getPhoneModel(modelName) == null) {
+            System.out.println("Model does not exist in inventory");
+            return;
+        }
+
+        System.out.println("Found in inventory:\nBrand: " + brandName + ", Model: " + modelName + ", Stock: " + inventory.getBrand(brandName).getPhoneModel(modelName).getStock());
+    }
+
+    private void validateSearchArguments(String[] arguments) {
+        //TODO: validate arguments
     }
 
     public void clear() {
