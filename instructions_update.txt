@@ -1,0 +1,7 @@
+add Nokia XR21 10
+add Samsung S22 5
+list
+update Nokia XR21 2
+list
+update Nokia XR21 -6
+list

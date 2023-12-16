@@ -25,4 +25,13 @@ public class Brand {
     public void setName(String name) {
         this.name = name;
     }
+
+    public PhoneModel getPhoneModel(String modelName) {
+        for (PhoneModel phoneModel : phoneModels) {
+            if (phoneModel.getModelName().equals(modelName)) {
+                return phoneModel;
+            }
+        }
+        return null;
+    }
 }

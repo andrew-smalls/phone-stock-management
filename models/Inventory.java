@@ -62,4 +62,12 @@ public class Inventory {
         this.brands.remove(brand);
     }
 
+    public Brand getBrand(String brandName) {
+        for (Brand brand : brands) {
+            if (brand.getName().equals(brandName)) {
+                return brand;
+            }
+        }
+        return null;
+    }
 }

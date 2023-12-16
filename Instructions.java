@@ -32,8 +32,35 @@ public class Instructions {
         //TODO: validate arguments
     }
 
+    //TODO: check for INTEGER overflow
     public void update(String[] arguments) {
+        validateUpdateArguments(arguments);
         System.out.println("Executing update" + Arrays.toString(arguments));
+
+        String brandName = arguments[0];
+        String modelName = arguments[1];
+        int stockChange = Integer.parseInt(arguments[2]);
+
+        if (inventory.getBrand(brandName) == null) {
+            System.out.println("Brand does not exist");
+            return;
+        }
+
+        if (inventory.getBrand(brandName).getPhoneModel(modelName) == null) {
+            System.out.println("Model does not exist");
+            return;
+        }
+        int initialStock = inventory.getBrand(brandName).getPhoneModel(modelName).getStock();
+        int finalStock = initialStock + stockChange;
+        if (finalStock < 0) {
+            // TODO: Specify this in the project description
+            finalStock = 0;
+        }
+        inventory.getBrand(brandName).getPhoneModel(modelName).setStock(finalStock);
+    }
+
+    private void validateUpdateArguments(String[] arguments) {
+        //TODO: validate arguments
     }
 
     public void search(String[] arguments) {
