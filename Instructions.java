@@ -1,8 +1,8 @@
-import models.Brand;
-import models.Inventory;
-import models.PhoneModel;
+import models.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /* TODO List:
@@ -23,6 +23,7 @@ import java.util.Scanner;
 
 public class Instructions {
     private final Inventory inventory = new Inventory();
+    private final Transactions transactions = new Transactions();
 
     public void list() {
         System.out.println("Executing list");
@@ -43,6 +44,8 @@ public class Instructions {
         phoneModel.setStock(stock);
         brand.addPhoneModel(phoneModel);
         inventory.addBrand(brand);
+
+        transactions.logTransaction(brandName, modelName, stock, TRANSACTION_TYPE.ADD);
     }
 
     private void validateAddArguments(String[] arguments) {
@@ -74,6 +77,8 @@ public class Instructions {
             finalStock = 0;
         }
         inventory.getBrand(brandName).getPhoneModel(modelName).setStock(finalStock);
+
+        transactions.logTransaction(brandName, modelName, finalStock, TRANSACTION_TYPE.UPDATE);
     }
 
     private void validateUpdateArguments(String[] arguments) {
@@ -121,7 +126,7 @@ public class Instructions {
         if (userInput.equals(adminPassword)) {
             System.out.println("Password correct. Proceed with administrator privileges.");
             // Perform inventory clear with administrator privileges
-            inventory.clear();
+            inventory.clear(transactions);
         } else {
             System.out.println("Incorrect password. Access denied.");
         }
@@ -129,31 +134,83 @@ public class Instructions {
         scanner.close();
     }
 
-    public void trend(String[] arguments) {
-        System.out.println("Executing trend" + Arrays.toString(arguments));
+    public void trend() {
+        HashMap<String, Integer> mostSoldPhoneModels =  transactions.getRankingOfMostSoldPhoneModelsLastThreeMonths();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        String repeatedUnderline64 = String.format("%-" + 64 + "s", "").replace(' ', '_');
+        String repeatedOverline64 = String.format("%-" + 64 + "s", "").replace(' ', '‾');
+        String formattedModel = String.format("%-30s", "Model"); // 30 characters wide
+        String formattedPhonesSold = String.format("%-30s", "Phones sold"); // 30 characters wide
+        String repeatedDash30 = String.format("%-" + 30 + "s", "").replace(' ', '-');
+
+        stringBuilder.append(repeatedUnderline64 + '\n');
+        stringBuilder.append("|").append(formattedModel).append("|").append(formattedPhonesSold).append("|\n");
+        stringBuilder.append("|").append(repeatedDash30).append("|").append(repeatedDash30).append("|");
+
+        for (Map.Entry<String, Integer> entry : mostSoldPhoneModels.entrySet()) {
+                String model = entry.getKey();
+                int phonesSold = entry.getValue();
+                formattedModel = String.format("%-30s", model); // 30 characters wide
+                formattedPhonesSold = String.format("%-30s", phonesSold); // 30 characters wide
+
+                stringBuilder.append("\n|").append(formattedModel).append("|").append(formattedPhonesSold).append("|");
+        }
+
+        stringBuilder.append('\n' + repeatedOverline64 + '\n');
+        System.out.println(stringBuilder);
     }
 
-    public void history(String[] arguments) {
-        System.out.println("Executing history" + Arrays.toString(arguments));
+    public void history() {
+        /*
+        Accesses a log of all past transactions, refer to all sales,
+        returns, and stock changes that have occurred.*/
+
+        System.out.println("Executing history");
+        transactions.showTransactions();
     }
 
     public void listResellers() {
+        /*
+        * Provides a list of all registered resellers.
+        * */
         System.out.println("Executing list resellers");
     }
 
     public void addReseller(String[] arguments) {
+        /*
+        * add_reseller <ResellerID> <ResellerName>
+          Registers a new reseller in the system
+          * */
         System.out.println("Executing add reseller" + Arrays.toString(arguments));
     }
 
     public void deleteReseller(String[] arguments) {
+        /*
+        *  delete_reseller <ResellerID>
+        Removes a reseller from the system.
+        Before deleting a reseller, it's important to ensure that there are no pending transactions,
+        everything that can be associated with the seller. For example if a stock is linked for
+        example.
+        * */
         System.out.println("Executing delete reseller" + Arrays.toString(arguments));
     }
 
     public void assignPhone(String[] arguments) {
+        /*
+        * assign_phone <ResellerID> <BrandName> <ModelName> <Quantity>
+          Assigns specific phone models and quantities to a reseller
+        * */
         System.out.println("Executing assign phone" + Arrays.toString(arguments));
     }
 
     public void deductStock(String[] arguments) {
+        /*
+        * deduct_stock <ResellerID> <BrandName> <ModelName> <Quantity>
+        Deducts stock from the inventory when a reseller sells or dispatches a phone model.
+        "dispatching" means sending or delivering the phone model to a customer. When a reseller
+        dispatches a phone model, it means they are sending it to the intended recipient.
+        * */
         System.out.println("Executing deduct stock" + Arrays.toString(arguments));
     }
 }

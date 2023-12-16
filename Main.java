@@ -5,6 +5,7 @@ public class Main {
         FileProcessor fileProcessor = new FileProcessor();
         System.out.println("File processing started");
 
+        // TODO: Add multiple files processing, in ascending order from directory
         fileProcessor.validateArguments(args);
 
         String instructionFilePath = args[0];

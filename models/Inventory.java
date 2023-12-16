@@ -71,10 +71,13 @@ public class Inventory {
         return null;
     }
 
-    public void clear() {
+    public void clear(Transactions transactions) {
         for (Brand brand : brands) {
-            brand.getPhoneModels().clear();
+            ArrayList<PhoneModel> phoneModels = brand.getPhoneModels();
+            for (PhoneModel phoneModel : phoneModels) {
+                phoneModel.setStock(0);
+                transactions.logTransaction(brand.getName(), phoneModel.getModelName(), 0, TRANSACTION_TYPE.CLEAR);
+            }
         }
-        brands.clear();
     }
 }

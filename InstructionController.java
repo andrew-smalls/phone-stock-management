@@ -21,10 +21,10 @@ public class InstructionController {
                 instructions.clear();
                 break;
             case "trend":
-                instructions.trend(arguments);
+                instructions.trend(); //TODO: specify this doesn't take arguments in project description
                 break;
             case "history":
-                instructions.history(arguments);
+                instructions.history();
                 break;
             case "list_resellers":
                 instructions.listResellers();
