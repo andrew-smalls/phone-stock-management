@@ -12,7 +12,7 @@ public class FileProcessor {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+                //System.out.println(line);
                 String[] lineArray = line.split(" ");
                 String option = lineArray[0];
                 String[] arguments = new String[lineArray.length - 1];
