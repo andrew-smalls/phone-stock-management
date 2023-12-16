@@ -1,11 +1,12 @@
 package models;
 
 public enum TRANSACTION_TYPE {
-    ADD("add"),
-    UPDATE("update"),
+    ADD("ADD"),
+    UPDATE("UPDATE"),
     SALE("SALE"),
-    RETURN("return"),
-    CLEAR("clear");
+    RETURN("RETURN"),
+    RESELLER_RESERVE("RESELLER_RESERVE"),
+    CLEAR("CLEAR");
 
     TRANSACTION_TYPE(String add) {
     }

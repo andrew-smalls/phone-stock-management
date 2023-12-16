@@ -7,7 +7,7 @@ import java.util.Map;
 // TODO: check when adding / removing from arrays
 public class Inventory {
 
-    private ArrayList<Brand> brands = new ArrayList<>();
+    private final ArrayList<Brand> brands = new ArrayList<>();
     public Inventory() {
     }
 
@@ -79,5 +79,34 @@ public class Inventory {
                 transactions.logTransaction(brand.getName(), phoneModel.getModelName(), 0, TRANSACTION_TYPE.CLEAR);
             }
         }
+    }
+
+    public void updateStock(String brandName, PhoneModel phoneModel) {
+        Brand brand = getBrand(brandName);
+        if (brand == null) {
+            System.out.println("Brand does not exist in inventory");
+            return;
+        }
+
+        PhoneModel phoneModelInInventory = brand.getPhoneModel(phoneModel.getModelName());
+        if (phoneModelInInventory == null) {
+            System.out.println("Model does not exist in inventory");
+            return;
+        }
+
+        int currentStock = phoneModelInInventory.getStock();
+        int newStock = currentStock - phoneModel.getStock();
+        if (newStock < 0) {
+            System.out.println("Not enough stock to assign to reseller");
+            return;
+        }
+        phoneModelInInventory.setStock(newStock);
+        brands.stream()
+                .filter(brand1 -> brand1.getName().equals(brandName))
+                .forEach(brand1 -> {
+                    brand1.getPhoneModels().stream()
+                            .filter(phoneModel1 -> phoneModel1.getModelName().equals(phoneModel.getModelName()))
+                            .forEach(phoneModel1 -> phoneModel1.setStock(newStock));
+                });
     }
 }

@@ -19,11 +19,15 @@ import java.util.Scanner;
 * 11. Use constants for repeated integers
 * 12. Re-use methods when possible: update can make use of search first, for example
 * 13. Admin password should be stored in a file, not in the code
+* 14. Test clear
+* 15. Test trend
+* 16. Test history
 * */
 
 public class Instructions {
     private final Inventory inventory = new Inventory();
     private final Transactions transactions = new Transactions();
+    private final ResellerRegistry resellerRegistry = new ResellerRegistry(inventory);
 
     public void list() {
         System.out.println("Executing list");
@@ -135,6 +139,8 @@ public class Instructions {
     }
 
     public void trend() {
+        System.out.println("Executing trend");
+
         HashMap<String, Integer> mostSoldPhoneModels =  transactions.getRankingOfMostSoldPhoneModelsLastThreeMonths();
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -162,27 +168,18 @@ public class Instructions {
     }
 
     public void history() {
-        /*
-        Accesses a log of all past transactions, refer to all sales,
-        returns, and stock changes that have occurred.*/
-
         System.out.println("Executing history");
         transactions.showTransactions();
     }
 
     public void listResellers() {
-        /*
-        * Provides a list of all registered resellers.
-        * */
         System.out.println("Executing list resellers");
+        resellerRegistry.showResellers();
     }
 
     public void addReseller(String[] arguments) {
-        /*
-        * add_reseller <ResellerID> <ResellerName>
-          Registers a new reseller in the system
-          * */
         System.out.println("Executing add reseller" + Arrays.toString(arguments));
+        resellerRegistry.addReseller(arguments);
     }
 
     public void deleteReseller(String[] arguments) {
@@ -193,15 +190,13 @@ public class Instructions {
         everything that can be associated with the seller. For example if a stock is linked for
         example.
         * */
+        // TODO
         System.out.println("Executing delete reseller" + Arrays.toString(arguments));
     }
 
     public void assignPhone(String[] arguments) {
-        /*
-        * assign_phone <ResellerID> <BrandName> <ModelName> <Quantity>
-          Assigns specific phone models and quantities to a reseller
-        * */
         System.out.println("Executing assign phone" + Arrays.toString(arguments));
+        resellerRegistry.assignPhone(arguments, transactions);
     }
 
     public void deductStock(String[] arguments) {
@@ -211,6 +206,7 @@ public class Instructions {
         "dispatching" means sending or delivering the phone model to a customer. When a reseller
         dispatches a phone model, it means they are sending it to the intended recipient.
         * */
+        // TODO
         System.out.println("Executing deduct stock" + Arrays.toString(arguments));
     }
 }

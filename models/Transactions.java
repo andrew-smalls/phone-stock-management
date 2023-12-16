@@ -9,6 +9,9 @@ public class Transactions {
     private final ArrayList<Transaction> transactions = new ArrayList<>();
     public void showTransactions() {
         System.out.println("Transactions");
+        for (Transaction transaction : transactions) {
+            System.out.println(transaction);
+        }
     }
 
     public void logTransaction(String brandName, String modelName, int stock, TRANSACTION_TYPE transactionType) {

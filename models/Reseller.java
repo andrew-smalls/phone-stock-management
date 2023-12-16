@@ -3,6 +3,7 @@ package models;
 public class Reseller {
     private int id;
     private String name;
+    private final Inventory resellerInventory = new Inventory();
 
     public Reseller() {
     }
@@ -21,6 +22,10 @@ public class Reseller {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Inventory getResellerInventory() {
+        return resellerInventory;
     }
 
     @Override
