@@ -28,90 +28,57 @@ public class Instructions {
     private final Inventory inventory = new Inventory();
     private final Transactions transactions = new Transactions();
     private final ResellerRegistry resellerRegistry = new ResellerRegistry(inventory);
-
+    private final ValidationUtils validationUtils = new ValidationUtils();
     public void list() {
         System.out.println("Executing list");
         inventory.getInventoryOverview();
     }
 
     public void add(String[] arguments) {
-        validateAddArguments(arguments);
         System.out.println("Executing add" + Arrays.toString(arguments));
+        if (!validationUtils.validAddArguments(arguments)) {
+            return;
+        }
+
         String brandName = arguments[0];
         String modelName = arguments[1];
         int stock = Integer.parseInt(arguments[2]);
 
-        Brand brand = new Brand();
-        brand.setName(brandName);
-        PhoneModel phoneModel = new PhoneModel();
-        phoneModel.setModelName(modelName);
-        phoneModel.setStock(stock);
-        brand.addPhoneModel(phoneModel);
-        inventory.addBrand(brand);
-
+        inventory.addBrand(brandName, modelName, stock);
         transactions.logTransaction(brandName, modelName, stock, TRANSACTION_TYPE.ADD);
     }
 
-    private void validateAddArguments(String[] arguments) {
-        //TODO: validate arguments
-    }
-
-    //TODO: check for INTEGER overflow
     public void update(String[] arguments) {
-        validateUpdateArguments(arguments);
         System.out.println("Executing update" + Arrays.toString(arguments));
+        if (!validationUtils.validAddArguments(arguments)) {
+            return;
+        }
 
         String brandName = arguments[0];
         String modelName = arguments[1];
         int stockChange = Integer.parseInt(arguments[2]);
 
-        if (inventory.getBrand(brandName) == null) {
-            System.out.println("Brand does not exist in inventory");
+        PhoneModel updatedPhoneModel = inventory.updateStock(brandName, modelName, stockChange);
+        if (updatedPhoneModel == null) {
+            System.out.println("Update failed");
             return;
         }
 
-        if (inventory.getBrand(brandName).getPhoneModel(modelName) == null) {
-            System.out.println("Model does not exist in inventory");
-            return;
-        }
-        int initialStock = inventory.getBrand(brandName).getPhoneModel(modelName).getStock();
-        int finalStock = initialStock + stockChange;
-        if (finalStock < 0) {
-            // TODO: Specify this in the project description
-            finalStock = 0;
-        }
-        inventory.getBrand(brandName).getPhoneModel(modelName).setStock(finalStock);
-
-        transactions.logTransaction(brandName, modelName, finalStock, TRANSACTION_TYPE.UPDATE);
+        transactions.logTransaction(brandName, modelName, updatedPhoneModel.getStock(), TRANSACTION_TYPE.UPDATE);
     }
 
-    private void validateUpdateArguments(String[] arguments) {
-        //TODO: validate arguments
-    }
 
     public void search(String[] arguments) {
         System.out.println("Executing search" + Arrays.toString(arguments));
-
-        validateSearchArguments(arguments);
+        if (!validationUtils.validSearchArguments(arguments)) {
+            return;
+        }
 
         String brandName = arguments[0];
         String modelName = arguments[1];
+        PhoneModel phoneModel = inventory.search(brandName, modelName);
 
-        if (inventory.getBrand(brandName) == null) {
-            System.out.println("Brand does not exist in inventory");
-            return;
-        }
-
-        if (inventory.getBrand(brandName).getPhoneModel(modelName) == null) {
-            System.out.println("Model does not exist in inventory");
-            return;
-        }
-
-        System.out.println("Found in inventory:\nBrand: " + brandName + ", Model: " + modelName + ", Stock: " + inventory.getBrand(brandName).getPhoneModel(modelName).getStock());
-    }
-
-    private void validateSearchArguments(String[] arguments) {
-        //TODO: validate arguments
+        System.out.println("Found in inventory:\nBrand: " + brandName + ", Model: " + phoneModel.getModelName() + ", Stock: " + phoneModel.getStock());
     }
 
     public void clear() {

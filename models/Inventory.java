@@ -54,9 +54,63 @@ public class Inventory {
         System.out.println(stringBuilder);
     }
 
-    public void addBrand(Brand brand) {
+    public void addBrand(String brandName, String modelName, int stock) {
+        Brand brand = createBrand(brandName, modelName, stock);
+
+        if (getBrand(brand.getName()) != null) {
+            System.out.println("Brand already exists in inventory");
+            return;
+        }
         this.brands.add(brand);
     }
+
+    public static Brand createBrand(String brandName, String modelName, int stock) {
+        Brand brand = new Brand();
+        brand.setName(brandName);
+        PhoneModel phoneModel = new PhoneModel();
+        phoneModel.setModelName(modelName);
+        phoneModel.setStock(stock);
+        brand.addPhoneModel(phoneModel);
+        return brand;
+    }
+
+    public PhoneModel updateStock(String brandName, String modelName, int stockChange) {
+        if (!validateUpdate(brandName, modelName)) {
+            return null;
+        }
+
+        PhoneModel existingPhoneModel = getBrand(brandName).getPhoneModel(modelName);
+        int initialStock = existingPhoneModel.getStock();
+        int finalStock = initialStock + stockChange;
+        if (finalStock < 0) {
+            // TODO: Specify this in the project description
+            finalStock = 0;
+        }
+        existingPhoneModel.setStock(finalStock);
+        brands.get(brands.indexOf(getBrand(brandName)))
+                .getPhoneModels()
+                .get(getBrand(brandName)
+                        .getPhoneModels()
+                        .indexOf(existingPhoneModel))
+                .setStock(finalStock);
+
+        PhoneModel updatedPhoneModel = getBrand(brandName).getPhoneModel(modelName);
+        return updatedPhoneModel;
+    }
+
+    private boolean validateUpdate(String brandName, String modelName) {
+        if (getBrand(brandName) == null) {
+            System.out.println("Brand does not exist in inventory");
+            return false;
+        }
+
+        if (getBrand(brandName).getPhoneModel(modelName) == null) {
+            System.out.println("Model does not exist in inventory");
+            return false;
+        }
+        return true;
+    }
+
 
     public void removeBrand(Brand brand) {
         this.brands.remove(brand);
@@ -81,7 +135,7 @@ public class Inventory {
         }
     }
 
-    public void updateStock(String brandName, PhoneModel phoneModel) {
+    public void updateStockOnResell(String brandName, PhoneModel phoneModel) {
         Brand brand = getBrand(brandName);
         if (brand == null) {
             System.out.println("Brand does not exist in inventory");
@@ -120,5 +174,19 @@ public class Inventory {
             }
         }
         return false;
+    }
+
+    public PhoneModel search(String brandName, String modelName) {
+        if (getBrand(brandName) == null) {
+            System.out.println("Brand does not exist in inventory");
+            return null;
+        }
+
+        PhoneModel phoneModel = getBrand(brandName).getPhoneModel(modelName);
+        if (phoneModel == null) {
+            System.out.println("Model does not exist in inventory");
+            return null;
+        }
+        return phoneModel;
     }
 }

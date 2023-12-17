@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class ResellerRegistry {
     private final ArrayList<Reseller> resellers = new ArrayList<>();
@@ -60,16 +61,16 @@ public class ResellerRegistry {
             return;
         }
 
-        Brand brand = new Brand();
-        brand.setName(brandName);
-        PhoneModel phoneModel = new PhoneModel();
-        phoneModel.setModelName(modelName);
-        phoneModel.setStock(Integer.parseInt(stock));
-        brand.addPhoneModel(phoneModel);
+        Brand brand = this.inventory.createBrand(brandName, modelName, Integer.parseInt(stock));
+        Optional<PhoneModel> phoneModel = brand.getPhoneModels().stream()
+                .filter(model -> model.getModelName().equals(modelName))
+                .findFirst();
 
-        this.inventory.updateStock(brandName, phoneModel);
-        reseller.getResellerInventory().addBrand(brand);
-        transactions.logTransaction(brandName, modelName, Integer.parseInt(stock), TRANSACTION_TYPE.RESELLER_RESERVE);
+        if (phoneModel.isPresent()) {
+            this.inventory.updateStockOnResell(brandName, phoneModel.get());
+            reseller.getResellerInventory().addBrand(brandName, modelName, Integer.parseInt(stock));
+            transactions.logTransaction(brandName, modelName, Integer.parseInt(stock), TRANSACTION_TYPE.RESELLER_RESERVE);
+        }
     }
 
     private Reseller getResellerById(int resellerId) {
@@ -99,7 +100,7 @@ public class ResellerRegistry {
         phoneModel.setStock(Integer.parseInt(stock));
         brand.addPhoneModel(phoneModel);
 
-        reseller.getResellerInventory().updateStock(brandName, phoneModel);
+        reseller.getResellerInventory().updateStockOnResell(brandName, phoneModel);
         transactions.logTransaction(brandName, modelName, Integer.parseInt(stock), TRANSACTION_TYPE.SALE);
     }
 }
