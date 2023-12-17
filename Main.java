@@ -10,6 +10,7 @@ public class Main {
 
         String instructionFilePath = args[0];
         InstructionController instructionController = new InstructionController();
+
         fileProcessor.processFile(instructionFilePath, instructionController);
 
         System.out.println("File processed successfully");

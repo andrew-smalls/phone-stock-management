@@ -31,13 +31,21 @@ public class ResellerRegistry {
     }
 
     public void deleteReseller(String[] arguments) {
-        String resellerName = arguments[0];
-        for (Reseller reseller : resellers) {
-            if (reseller.getName().equals(resellerName)) {
-                resellers.remove(reseller);
+        int resellerId = Integer.parseInt(arguments[0]);
+        // get reseller by id and check if it contains any stock in its inventory
+        Reseller reseller = getResellerById(resellerId);
+        if (reseller != null) {
+            Inventory resellerInventory = reseller.getResellerInventory();
+            if (resellerInventory != null && resellerInventory.hasStock()) {
+                System.out.println("Reseller has stock in inventory");
                 return;
             }
+
+            resellers.remove(reseller);
+            System.out.println("Reseller deleted");
+            return;
         }
+
         System.out.println("Reseller does not exist");
     }
 

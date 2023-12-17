@@ -32,7 +32,7 @@ public class Transactions {
 
         // rank the phone models by sales (use LinkedHashMap to keep the order descending - HashMap forces ascending)
         LinkedHashMap<String, Integer> rankedPhoneSales = phoneModelSales.entrySet().stream()
-                .sorted(Map.Entry.<String, Integer>comparingByValue(Comparator.reverseOrder()))
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(
                         LinkedHashMap::new,
                         (m, e) -> m.put(e.getKey(), e.getValue()),

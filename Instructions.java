@@ -183,15 +183,8 @@ public class Instructions {
     }
 
     public void deleteReseller(String[] arguments) {
-        /*
-        *  delete_reseller <ResellerID>
-        Removes a reseller from the system.
-        Before deleting a reseller, it's important to ensure that there are no pending transactions,
-        everything that can be associated with the seller. For example if a stock is linked for
-        example.
-        * */
-        // TODO
         System.out.println("Executing delete reseller" + Arrays.toString(arguments));
+        resellerRegistry.deleteReseller(arguments);
     }
 
     public void assignPhone(String[] arguments) {

@@ -109,4 +109,16 @@ public class Inventory {
                             .forEach(phoneModel1 -> phoneModel1.setStock(newStock));
                 });
     }
+
+    public boolean hasStock() {
+        for (Brand brand : brands) {
+            ArrayList<PhoneModel> phoneModels = brand.getPhoneModels();
+            for (PhoneModel phoneModel : phoneModels) {
+                if (phoneModel.getStock() > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
