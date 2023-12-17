@@ -1,0 +1,3 @@
+add Nokia XR21 10
+add Samsung S22 5
+list

@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class FileProcessor {
 
@@ -28,24 +25,18 @@ public class FileProcessor {
     }
 
     public void validateArguments(String[] args) {
-
         if (args.length == 0) {
             System.out.println("No arguments provided");
             System.exit(0);
         }
 
-        if (args.length > 1) {
-            System.out.println("Too many arguments provided. Only one argument is allowed");
-            System.exit(0);
-        }
-
-        // check if file exists
-        String filePath = args[0];
-        try {
-            FileReader fileReader = new FileReader(filePath);
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
-            System.exit(0);
+        String[] fileNames = args;
+        for (String fileName : fileNames) {
+            File file = new File(fileName);
+            if (!file.exists()) {
+                System.out.println("File does not exist: " + fileName);
+                System.exit(-1);
+            }
         }
     }
 

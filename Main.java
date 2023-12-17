@@ -1,3 +1,5 @@
+import java.io.File;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
@@ -5,13 +7,15 @@ public class Main {
         FileProcessor fileProcessor = new FileProcessor();
         System.out.println("File processing started");
 
-        // TODO: Add multiple files processing, in ascending order from directory
         fileProcessor.validateArguments(args);
-
-        String instructionFilePath = args[0];
         InstructionController instructionController = new InstructionController();
 
-        fileProcessor.processFile(instructionFilePath, instructionController);
+        String[] fileNames = args;
+        Arrays.sort(fileNames);
+        for (String instructionFilePath : fileNames) {
+            System.out.println("Processing file: " + instructionFilePath);
+            fileProcessor.processFile(instructionFilePath, instructionController);
+        }
 
         System.out.println("File processed successfully");
     }
