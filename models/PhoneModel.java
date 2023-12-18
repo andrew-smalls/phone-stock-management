@@ -27,7 +27,7 @@ public class PhoneModel {
     @Override
     public String toString() {
         return "Phone{" +
-                ", modelName='" + modelName + '\'' +
+                "modelName='" + modelName + '\'' +
                 ", stock=" + stock +
                 '}';
     }

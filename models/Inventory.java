@@ -154,4 +154,10 @@ public class Inventory {
         }
         return phoneModel;
     }
+
+    public ArrayList<Brand> getAllBrands() {
+        return new ArrayList<>(brands);
+    }
 }
+
+
