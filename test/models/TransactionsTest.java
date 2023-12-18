@@ -8,13 +8,19 @@ class TransactionsTest {
 
     @Test
     void showTransactions() {
+        //TDOO: Andrei
+
     }
 
     @Test
     void logTransaction() {
+        //TDOO: Andrei
+
     }
 
     @Test
     void getRankingOfMostSoldPhoneModelsLastThreeMonths() {
+        //TDOO: Andrei
+
     }
 }
