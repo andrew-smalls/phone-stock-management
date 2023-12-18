@@ -23,7 +23,7 @@ public class Inventory {
         StringBuilder stringBuilder = new StringBuilder();
         String repeatedUnderline64 = String.format("%-" + 64 + "s", "").replace(' ', '_');
         String repeatedOverline64 = String.format("%-" + 64 + "s", "").replace(' ', '‾');
-        stringBuilder.append(repeatedUnderline64 + '\n');
+        stringBuilder.append(repeatedUnderline64).append('\n');
 
         String formattedBrand = String.format("%-20s", "Brand"); // 20 characters wide
         String formattedModel = String.format("%-30s", "Model"); // 30 characters wide
@@ -49,7 +49,7 @@ public class Inventory {
             }
         }
 
-        stringBuilder.append('\n' + repeatedOverline64 + '\n');
+        stringBuilder.append('\n').append(repeatedOverline64).append('\n');
         System.out.println(stringBuilder);
     }
 

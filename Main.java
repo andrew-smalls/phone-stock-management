@@ -9,9 +9,8 @@ public class Main {
         fileProcessor.validateArguments(args);
         InstructionController instructionController = new InstructionController();
 
-        String[] fileNames = args;
-        Arrays.sort(fileNames);
-        for (String instructionFilePath : fileNames) {
+        Arrays.sort(args);
+        for (String instructionFilePath : args) {
             System.out.println("Processing file: " + instructionFilePath);
             fileProcessor.processFile(instructionFilePath, instructionController);
         }

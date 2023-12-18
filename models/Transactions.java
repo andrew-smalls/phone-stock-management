@@ -57,11 +57,11 @@ public class Transactions {
     }
 
     static class Transaction {
-        private LocalDateTime timestamp;
-        private TRANSACTION_TYPE transactionType;
-        private String brandName;
-        private String modelName;
-        private int stock;
+        private final LocalDateTime timestamp;
+        private final TRANSACTION_TYPE transactionType;
+        private final String brandName;
+        private final String modelName;
+        private final int stock;
 
         public Transaction(LocalDateTime timestamp, TRANSACTION_TYPE transactionType,
                            String brandName, String modelName, int stock) {

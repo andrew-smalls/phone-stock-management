@@ -111,7 +111,7 @@ public class Instructions {
         String formattedPhonesSold = String.format("%-30s", "Phones sold"); // 30 characters wide
         String repeatedDash30 = String.format("%-" + 30 + "s", "").replace(' ', '-');
 
-        stringBuilder.append(repeatedUnderline64 + '\n');
+        stringBuilder.append(repeatedUnderline64).append('\n');
         stringBuilder.append("|").append(formattedModel).append("|").append(formattedPhonesSold).append("|\n");
         stringBuilder.append("|").append(repeatedDash30).append("|").append(repeatedDash30).append("|");
 
@@ -124,7 +124,7 @@ public class Instructions {
                 stringBuilder.append("\n|").append(formattedModel).append("|").append(formattedPhonesSold).append("|");
         }
 
-        stringBuilder.append('\n' + repeatedOverline64 + '\n');
+        stringBuilder.append('\n').append(repeatedOverline64).append('\n');
         return stringBuilder;
     }
 

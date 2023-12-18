@@ -30,8 +30,7 @@ public class FileProcessor {
             System.exit(0);
         }
 
-        String[] fileNames = args;
-        for (String fileName : fileNames) {
+        for (String fileName : args) {
             File file = new File(fileName);
             if (!file.exists()) {
                 System.out.println("File does not exist: " + fileName);
