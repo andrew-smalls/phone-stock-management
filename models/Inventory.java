@@ -87,7 +87,7 @@ public class Inventory {
             System.out.println("Brand does not exist in inventory");
             return;
         }
-
+//codu nu ajunge niciodata sa fie phoneModelInInventory == null
         PhoneModel phoneModelInInventory = brand.getPhoneModel(phoneModel.getModelName());
         if (phoneModelInInventory == null) {
             System.out.println("Model does not exist in inventory");

@@ -3,8 +3,9 @@ package models;
 import java.util.ArrayList;
 
 public class ResellerRegistry {
-    private final ArrayList<Reseller> resellers = new ArrayList<>();
+    public final ArrayList<Reseller> resellers = new ArrayList<>();
     private final Inventory inventory;
+
 
     public ResellerRegistry(Inventory inventory) {
         this.inventory = inventory;

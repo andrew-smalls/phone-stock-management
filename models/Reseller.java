@@ -3,7 +3,7 @@ package models;
 public class Reseller {
     private int id;
     private String name;
-    private final Inventory resellerInventory = new Inventory();
+    public final Inventory resellerInventory = new Inventory();
 
     public Reseller() {
     }
