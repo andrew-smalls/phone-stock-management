@@ -1,7 +1,7 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 
 public class ResellerRegistry {
     private final ArrayList<Reseller> resellers = new ArrayList<>();
@@ -135,5 +135,9 @@ public class ResellerRegistry {
         reseller.getResellerInventory().updateStock(brandName, modelName, -quantity);
 
         transactions.logTransaction(brandName, modelName, quantity, TRANSACTION_TYPE.SALE);
+    }
+
+    public List<Reseller> getAllResellers() {
+        return new ArrayList<>(resellers);
     }
 }
