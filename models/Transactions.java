@@ -19,7 +19,6 @@ public class Transactions {
         transactions.add(transaction);
     }
 
-    // method dedicated to getting the Ranking Of Most Sold Phone Models in Last Three Months
     public HashMap<String, Integer> getRankingOfMostSoldPhoneModelsLastThreeMonths() {
         System.out.println("Ranking of most sold phone models last three months");
         ArrayList<Transaction> soldTransactions = new ArrayList<>();

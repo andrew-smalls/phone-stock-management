@@ -19,11 +19,7 @@ public class ResellerRegistry {
     }
 
     public void addReseller(String[] arguments) {
-        String resellerID = arguments[0];
-        String resellerName = arguments[1];
-        Reseller reseller = new Reseller();
-        reseller.setId(Integer.parseInt(resellerID));
-        reseller.setName(resellerName);
+        Reseller reseller = createReseller(arguments);
         if (resellers.contains(reseller)) {
             System.out.println("Reseller already exists");
             return;
@@ -31,46 +27,85 @@ public class ResellerRegistry {
         resellers.add(reseller);
     }
 
+    private static Reseller createReseller(String[] arguments) {
+        String resellerID = arguments[0];
+        String resellerName = arguments[1];
+        Reseller reseller = new Reseller();
+        reseller.setId(Integer.parseInt(resellerID));
+        reseller.setName(resellerName);
+        return reseller;
+    }
+
     public void deleteReseller(String[] arguments) {
         int resellerId = Integer.parseInt(arguments[0]);
         // get reseller by id and check if it contains any stock in its inventory
         Reseller reseller = getResellerById(resellerId);
-        if (reseller != null) {
-            Inventory resellerInventory = reseller.getResellerInventory();
-            if (resellerInventory != null && resellerInventory.hasStock()) {
-                System.out.println("Reseller has stock in inventory");
-                return;
-            }
-
-            resellers.remove(reseller);
-            System.out.println("Reseller deleted");
+        if (reseller == null) {
+            System.out.println("Reseller ID not found");
             return;
         }
+        if (canDeleteReseller(reseller)) {
+            resellers.remove(reseller);
+            System.out.println("Reseller deleted");
+        }
+    }
 
-        System.out.println("Reseller does not exist");
+    private static boolean canDeleteReseller(Reseller reseller) {
+        Inventory resellerInventory = reseller.getResellerInventory();
+        if (resellerInventory != null && resellerInventory.hasStock()) {
+            System.out.println("Reseller has stock in inventory");
+            return false;
+        }
+        return true;
     }
 
     public void assignPhone(String[] arguments, Transactions transactions) {
-        String resellerId = arguments[0];
+        int resellerId = Integer.parseInt(arguments[0]);
         String brandName = arguments[1];
         String modelName = arguments[2];
-        String stock = arguments[3];
-        Reseller reseller = getResellerById(Integer.parseInt(resellerId));
-        if (reseller == null) {
-            System.out.println("Reseller does not exist");
+        int quantity = Integer.parseInt(arguments[3]);
+
+        if (!canAssignPhoneStockToReseller(resellerId, brandName, modelName, quantity, inventory)) {
             return;
         }
 
-        Brand brand = this.inventory.createBrand(brandName, modelName, Integer.parseInt(stock));
-        Optional<PhoneModel> phoneModel = brand.getPhoneModels().stream()
-                .filter(model -> model.getModelName().equals(modelName))
-                .findFirst();
+        inventory.updateStock(brandName, modelName, -quantity);
 
-        if (phoneModel.isPresent()) {
-            this.inventory.updateStockOnResell(brandName, phoneModel.get());
-            reseller.getResellerInventory().addBrand(brandName, modelName, Integer.parseInt(stock));
-            transactions.logTransaction(brandName, modelName, Integer.parseInt(stock), TRANSACTION_TYPE.RESELLER_RESERVE);
+        Reseller reseller = getResellerById(resellerId);
+        boolean brandNotInResellerInventory = reseller.getResellerInventory().getBrand(brandName) == null;
+        if (brandNotInResellerInventory) {
+            reseller.getResellerInventory().addBrand(brandName, modelName);
         }
+        reseller.getResellerInventory().updateStock(brandName, modelName, quantity);
+
+        transactions.logTransaction(brandName, modelName, -quantity, TRANSACTION_TYPE.RESELLER_RESERVE);
+    }
+
+    private boolean canAssignPhoneStockToReseller(int resellerId, String brandName, String modelName, int quantity, Inventory inventoryToCheck) {
+        Reseller reseller = getResellerById(resellerId);
+        if (reseller == null) {
+            System.out.println("Reseller ID " + resellerId + " not found. Please verify the reseller ID.");
+            return false;
+        }
+        // check if brand and model exists in inventory
+        Brand brand = inventoryToCheck.getBrand(brandName);
+        if (brand == null) {
+            System.out.println("Brand " + brandName + " not found. Please verify the brand name.");
+            return false;
+        }
+        PhoneModel phoneModel = brand.getPhoneModel(modelName);
+        if (phoneModel == null) {
+            System.out.println("Model " + modelName + " for brand " + brandName + " not found. Please verify the model name.");
+            return false;
+        }
+        // check if inventory has enough stock
+        if (phoneModel.getStock() < quantity) {
+            System.out.println("Insufficient stock for " + brandName + " " + modelName + ".\n" +
+                    "Requested: " + quantity + ". Available: " + phoneModel.getStock() + ".");
+            return false;
+        }
+
+        return true;
     }
 
     private Reseller getResellerById(int resellerId) {
@@ -83,24 +118,22 @@ public class ResellerRegistry {
     }
 
     public void deductStock(String[] arguments, Transactions transactions) {
-        String resellerId = arguments[0];
+        int resellerId = Integer.parseInt(arguments[0]);
         String brandName = arguments[1];
         String modelName = arguments[2];
-        String stock = arguments[3];
-        Reseller reseller = getResellerById(Integer.parseInt(resellerId));
+        int quantity = Integer.parseInt(arguments[3]);
+
+        Reseller reseller = getResellerById(resellerId);
         if (reseller == null) {
-            System.out.println("Reseller does not exist");
+            System.out.println("Reseller ID " + resellerId + " not found. Please verify the reseller ID.");
             return;
         }
 
-        Brand brand = new Brand();
-        brand.setName(brandName);
-        PhoneModel phoneModel = new PhoneModel();
-        phoneModel.setModelName(modelName);
-        phoneModel.setStock(Integer.parseInt(stock));
-        brand.addPhoneModel(phoneModel);
+        if (!canAssignPhoneStockToReseller(resellerId, brandName, modelName, quantity, reseller.getResellerInventory())) {
+            return;
+        }
+        reseller.getResellerInventory().updateStock(brandName, modelName, -quantity);
 
-        reseller.getResellerInventory().updateStockOnResell(brandName, phoneModel);
-        transactions.logTransaction(brandName, modelName, Integer.parseInt(stock), TRANSACTION_TYPE.SALE);
+        transactions.logTransaction(brandName, modelName, quantity, TRANSACTION_TYPE.SALE);
     }
 }

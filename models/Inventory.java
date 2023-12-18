@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: check when adding / removing from arrays
 public class Inventory {
 
     private final ArrayList<Brand> brands = new ArrayList<>();
@@ -54,11 +53,11 @@ public class Inventory {
         System.out.println(stringBuilder);
     }
 
-    public void addBrand(String brandName, String modelName, int stock) {
-        Brand brand = createBrand(brandName, modelName, stock);
+    public void addBrand(String brandName, String modelName) {
+        Brand brand = createBrand(brandName, modelName, 0);
 
         if (getBrand(brand.getName()) != null) {
-            System.out.println("Brand already exists in inventory");
+            System.out.println("Brand already exists in inventory.");
             return;
         }
         this.brands.add(brand);
@@ -111,11 +110,6 @@ public class Inventory {
         return true;
     }
 
-
-    public void removeBrand(Brand brand) {
-        this.brands.remove(brand);
-    }
-
     public Brand getBrand(String brandName) {
         for (Brand brand : brands) {
             if (brand.getName().equals(brandName)) {
@@ -133,35 +127,6 @@ public class Inventory {
                 transactions.logTransaction(brand.getName(), phoneModel.getModelName(), 0, TRANSACTION_TYPE.CLEAR);
             }
         }
-    }
-
-    public void updateStockOnResell(String brandName, PhoneModel phoneModel) {
-        Brand brand = getBrand(brandName);
-        if (brand == null) {
-            System.out.println("Brand does not exist in inventory");
-            return;
-        }
-
-        PhoneModel phoneModelInInventory = brand.getPhoneModel(phoneModel.getModelName());
-        if (phoneModelInInventory == null) {
-            System.out.println("Model does not exist in inventory");
-            return;
-        }
-
-        int currentStock = phoneModelInInventory.getStock();
-        int newStock = currentStock - phoneModel.getStock();
-        if (newStock < 0) {
-            System.out.println("Not enough stock to assign to reseller");
-            return;
-        }
-        phoneModelInInventory.setStock(newStock);
-        brands.stream()
-                .filter(brand1 -> brand1.getName().equals(brandName))
-                .forEach(brand1 -> {
-                    brand1.getPhoneModels().stream()
-                            .filter(phoneModel1 -> phoneModel1.getModelName().equals(phoneModel.getModelName()))
-                            .forEach(phoneModel1 -> phoneModel1.setStock(newStock));
-                });
     }
 
     public boolean hasStock() {

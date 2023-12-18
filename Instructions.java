@@ -6,25 +6,15 @@ import java.util.Map;
 import java.util.Scanner;
 
 /* TODO List:
-* 1. Add validation for arguments
-* 2. Add validation for integer overflow
-* 3. Add validation for negative stock
-* 4. Add validation for duplicate brands
-* 5. Add validation for duplicate models
-* 6. Add validation for non-existent brands
-* 7. Add validation for non-existent models
-* 8. Add validation for non-existent resellers
-* 9. Refactor repeated code
-* 10. Use constants for repeated strings
-* 11. Use constants for repeated integers
-* 12. Re-use methods when possible: update can make use of search first, for example
-* 13. Admin password should be stored in a file, not in the code
-* 14. Test clear
-* 15. Test trend
-* 16. Test history
+* 1. Add validation for duplicate brands
+* 2. Add validation for duplicate models
+* 3. Use constants for repeated strings
+* 4. Use constants for repeated integers
+* 5. Admin password should be stored in a file, not in the code
 * */
 
 public class Instructions {
+    public static final String ADMIN_PASSWORD = "admin";
     private final Inventory inventory = new Inventory();
     private final Transactions transactions = new Transactions();
     private final ResellerRegistry resellerRegistry = new ResellerRegistry(inventory);
@@ -44,7 +34,8 @@ public class Instructions {
         String modelName = arguments[1];
         int stock = Integer.parseInt(arguments[2]);
 
-        inventory.addBrand(brandName, modelName, stock);
+        inventory.addBrand(brandName, modelName);
+        inventory.updateStock(brandName, modelName, stock);
         transactions.logTransaction(brandName, modelName, stock, TRANSACTION_TYPE.ADD);
     }
 
@@ -88,13 +79,11 @@ public class Instructions {
 
         Scanner scanner = new Scanner(System.in);
 
-        String adminPassword = "admin"; // Replace this with the actual admin password
-
         System.out.println("Please enter the administrator password:");
         String userInput = scanner.nextLine();
 
         // Check if the entered password matches the admin password
-        if (userInput.equals(adminPassword)) {
+        if (userInput.equals(ADMIN_PASSWORD)) {
             System.out.println("Password correct. Proceed with administrator privileges.");
             // Perform inventory clear with administrator privileges
             inventory.clear(transactions);
@@ -108,7 +97,12 @@ public class Instructions {
     public void trend() {
         System.out.println("Executing trend");
 
-        HashMap<String, Integer> mostSoldPhoneModels =  transactions.getRankingOfMostSoldPhoneModelsLastThreeMonths();
+        HashMap<String, Integer> mostSoldPhoneModels = transactions.getRankingOfMostSoldPhoneModelsLastThreeMonths();
+        StringBuilder stringBuilder = getFormattedTrend(mostSoldPhoneModels);
+        System.out.println(stringBuilder);
+    }
+
+    private static StringBuilder getFormattedTrend(HashMap<String, Integer> mostSoldPhoneModels) {
         StringBuilder stringBuilder = new StringBuilder();
 
         String repeatedUnderline64 = String.format("%-" + 64 + "s", "").replace(' ', '_');
@@ -131,7 +125,7 @@ public class Instructions {
         }
 
         stringBuilder.append('\n' + repeatedOverline64 + '\n');
-        System.out.println(stringBuilder);
+        return stringBuilder;
     }
 
     public void history() {
@@ -146,21 +140,39 @@ public class Instructions {
 
     public void addReseller(String[] arguments) {
         System.out.println("Executing add reseller" + Arrays.toString(arguments));
+        if (!validationUtils.validAddResellerArguments(arguments)) {
+            System.out.println("Invalid arguments");
+            return;
+        }
         resellerRegistry.addReseller(arguments);
     }
 
     public void deleteReseller(String[] arguments) {
         System.out.println("Executing delete reseller" + Arrays.toString(arguments));
+        if (!validationUtils.validDeleteResellerArguments(arguments)) {
+            System.out.println("Invalid arguments");
+            return;
+        }
         resellerRegistry.deleteReseller(arguments);
     }
 
     public void assignPhone(String[] arguments) {
         System.out.println("Executing assign phone" + Arrays.toString(arguments));
+        if (!validationUtils.validAssignPhoneArguments(arguments)) {
+            System.out.println("Invalid arguments");
+            return;
+        }
+
         resellerRegistry.assignPhone(arguments, transactions);
     }
 
     public void deductStock(String[] arguments) {
         System.out.println("Executing deduct stock" + Arrays.toString(arguments));
+        if (!validationUtils.validAssignPhoneArguments(arguments)) {
+            System.out.println("Invalid arguments");
+            return;
+        }
+
         resellerRegistry.deductStock(arguments, transactions);
     }
 }
