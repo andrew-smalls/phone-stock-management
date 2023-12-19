@@ -1,3 +1,5 @@
+package controllers;
+
 public class InstructionController {
 
     private final Instructions instructions = new Instructions();

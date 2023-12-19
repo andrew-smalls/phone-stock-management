@@ -1,5 +1,6 @@
 package test;
 
+import controllers.Instructions;
 import models.Brand;
 import models.Inventory;
 import models.PhoneModel;
@@ -23,6 +24,7 @@ class InstructionsTest {
         inventory = new Inventory();
         inventory.addBrand("Samsung", "Galaxy S21");
         inventory.updateStock("Samsung", "Galaxy S21", 10);
+        Instructions instructions = new Instructions();
     }
 
     @Test

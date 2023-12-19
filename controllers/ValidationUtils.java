@@ -1,3 +1,5 @@
+package controllers;
+
 public class ValidationUtils {
 
     public boolean validSearchArguments(String[] arguments) {
