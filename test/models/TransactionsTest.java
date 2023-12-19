@@ -61,9 +61,11 @@ class TransactionsTest {
         replaced = replaced.replace("\r\n", "\n"); // replace CRLF with LF
         replaced = replaced.replace("\r", "\n"); // replace CRLF with LF
 
-        String expectedOutput = "Transactions\n" +
-                "Transaction{timestamp=time, transactionType=ADD, brandName='Nokia', modelName='XR21', stock=10}\n" +
-                "Transaction{timestamp=time, transactionType=ADD, brandName='Samsung', modelName='S22', stock=5}\n" ;
+        String expectedOutput = """
+                Transactions
+                Transaction{timestamp=time, transactionType=ADD, brandName='Nokia', modelName='XR21', stock=10}
+                Transaction{timestamp=time, transactionType=ADD, brandName='Samsung', modelName='S22', stock=5}
+                """;
 
         assertEquals(expectedOutput, replaced);
     }

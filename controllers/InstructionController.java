@@ -1,7 +1,5 @@
 package controllers;
 
-import models.Transactions;
-
 public class InstructionController {
 
     private final Instructions instructions;

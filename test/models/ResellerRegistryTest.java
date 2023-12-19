@@ -1,7 +1,6 @@
-package test.models;
-import org.junit.jupiter.api.Test;
+package models;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class ResellerRegistryTest {
 
