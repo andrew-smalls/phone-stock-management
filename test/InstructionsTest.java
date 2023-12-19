@@ -9,8 +9,10 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 class InstructionsTest {
     private static Inventory inventory;
@@ -19,12 +21,14 @@ class InstructionsTest {
 
     private static PhoneModel phoneModel;
 
+    private static Instructions instructions;
+
     @BeforeAll
     static void setUp() {
         inventory = new Inventory();
         inventory.addBrand("Samsung", "Galaxy S21");
         inventory.updateStock("Samsung", "Galaxy S21", 10);
-        Instructions instructions = new Instructions();
+        instructions = new Instructions();
     }
 
     @Test
@@ -33,8 +37,9 @@ class InstructionsTest {
         ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor));
         System.setOut(System.out);
-        inventory.getInventoryOverview();
-        String expectedOutput = "________________________________________________________________\n" +
+        instructions.list();
+        String expectedOutput = "Executing list\n" +
+                "________________________________________________________________\n" +
                 "|Brand               |Model                         |Quantity  |\n" +
                 "|--------------------|------------------------------|----------|\n" +
                 "|Samsung             |Galaxy S21                    |10        |\n" +
@@ -47,6 +52,32 @@ class InstructionsTest {
     void add() {
         String[] validArguments = {"Samsung", "Galaxy S21", "10"};
         String[] invalidArguments = {"Samsung", "Galaxy S21"};
+        String[] invalidArguments2 = {"Samsung", "Galaxy S21", "abc"};
+
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor));
+        System.setOut(System.out);
+        instructions.add(validArguments);
+        String expectedOutput = "Executing add" + Arrays.toString(validArguments) + "\n";
+        assertEquals(expectedOutput, outputStreamCaptor.toString());
+
+        //create new output stream to capture the printed output
+        ByteArrayOutputStream outputStreamCaptor2 = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor2));
+        System.setOut(System.out);
+        instructions.add(invalidArguments);
+        String expectedOutput2 = "Executing add" + Arrays.toString(invalidArguments) + "\nInvalid number of arguments\n";
+        assertEquals(expectedOutput2, outputStreamCaptor2.toString());
+        instructions.add(invalidArguments);
+
+        //create new output stream to capture the printed output
+        ByteArrayOutputStream outputStreamCaptor3 = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor3));
+        System.setOut(System.out);
+        instructions.add(invalidArguments2);
+        String expectedOutput3 = "Executing add" + Arrays.toString(invalidArguments2) + "\nInvalid stock argument\n";
+        assertEquals(expectedOutput3, outputStreamCaptor3.toString());
+
     }
 
     @Test
