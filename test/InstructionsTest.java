@@ -1,6 +1,6 @@
-package test;
 
 import controllers.Instructions;
+import controllers.ValidationUtils;
 import models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +27,8 @@ class InstructionsTest {
     private static Instructions instructions;
 
     private static Transactions transactions;
+    private static ResellerRegistry resellerRegistry;
+    private static ValidationUtils validationUtils;
     private String[] validArguments = {"Motorola", "Moto G", "10"};
 
 
@@ -35,8 +37,11 @@ class InstructionsTest {
         inventory = new Inventory();
         inventory.addBrand("Samsung", "Galaxy S21");
         inventory.updateStock("Samsung", "Galaxy S21", 10);
-        instructions = new Instructions();
         transactions = new Transactions();
+        resellerRegistry = new ResellerRegistry(inventory);
+        validationUtils = new ValidationUtils();
+
+        instructions = new Instructions(inventory, transactions, resellerRegistry, validationUtils);
     }
 
     @Test
@@ -109,29 +114,27 @@ class InstructionsTest {
         assertEquals(expectedOutput2, outputStreamCaptor2.toString());
     }
 
-//    @Test
-//    void search() {
-//
-//        //TODO: andrei, vezi si tu ce nu merge aici
-//        String[] validArguments = {"Motorola", "Moto G"};
-//        String[] invalidArguments = {"Motorola", "Moto G", "10"};
-//
-//        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-//        System.setOut(new PrintStream(outputStreamCaptor));
-//        System.setOut(System.out);
-//        instructions.search(validArguments);
-//        String expectedOutput = "Executing search" + Arrays.toString(validArguments) + "\n" +
-//                "Found in inventory:\nBrand: Motorola, Model: Moto G, Stock: 10\n";
-//        assertEquals(expectedOutput, outputStreamCaptor.toString());
-//
-//        ByteArrayOutputStream outputStreamCaptor2 = new ByteArrayOutputStream();
-//        System.setOut(new PrintStream(outputStreamCaptor2));
-//        System.setOut(System.out);
-//        instructions.search(invalidArguments);
-//        String expectedOutput2 = "Executing search" + Arrays.toString(invalidArguments) + "\n" +
-//                "Invalid number of arguments\n";
-//        assertEquals(expectedOutput2, outputStreamCaptor2.toString());
-//    }
+    @Test
+    void search() {
+        String[] existentPhone = {"Samsung", "Galaxy S21"};
+        String[] nonExistentPhone = {"Motorola", "Moto G", "10"};
+
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor));
+        System.setOut(System.out);
+        instructions.search(existentPhone);
+        String expectedOutput = "Executing search" + Arrays.toString(existentPhone) + "\n" +
+                "Found in inventory:\nBrand: Samsung, Model: Galaxy S21, Stock: 10\n";
+        assertEquals(expectedOutput, outputStreamCaptor.toString());
+
+        ByteArrayOutputStream outputStreamCaptor2 = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor2));
+        System.setOut(System.out);
+        instructions.search(nonExistentPhone);
+        String expectedOutput2 = "Executing search" + Arrays.toString(nonExistentPhone) + "\n" +
+                "Invalid number of arguments\n";
+        assertEquals(expectedOutput2, outputStreamCaptor2.toString());
+    }
 
     @Test
     void clear() {
@@ -156,30 +159,49 @@ class InstructionsTest {
                 "Please enter the administrator password:\n" +
                 "Incorrect password. Access denied.\n";
         assertEquals(expectedOutput2, outContent2.toString());
-
     }
 
     @Test
     void trend() {
+        instructions.add(new String[]{"Samsung", "S22", "5"});
+        instructions.add(new String[]{"Apple", "iPhone15", "5"});
+        instructions.addReseller(new String[]{"1", "iStore"});
+        instructions.addReseller(new String[]{"2", "AndroidLovers"});
+        instructions.assignPhone(new String[]{"1", "Apple", "iPhone15", "4"});
+        instructions.assignPhone(new String[]{"2", "Samsung", "S22", "2"});
+        instructions.deductStock(new String[]{"1", "Apple", "iPhone15", "2"});
+        instructions.deductStock(new String[]{"2", "Samsung", "S22", "1"});
+        instructions.deductStock(new String[]{"1", "Apple", "iPhone15", "2"});
 
-        //TODO:
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        HashMap<String, Integer> mostSoldPhoneModels = new HashMap<>();
-        mostSoldPhoneModels.put("Model1", 100);
-        LocalDateTime localDateTime = LocalDateTime.now();
-        TRANSACTION_TYPE transactionType = TRANSACTION_TYPE.SALE;
-
-        transactions.logTransaction("Brand1", "Model1", 100, transactionType);
         System.setOut(System.out);
+
         instructions.trend();
 
-        String actualFormattedTrend = instructions.getFormattedTrendForTesting(mostSoldPhoneModels);
+        String expectedOutput = """
+               Executing trend
+               Ranking of most sold phone models last three months
+               ________________________________________________________________
+               |Model                         |Phones sold                   |
+               |------------------------------|------------------------------|
+               |iPhone15                      |4                             |
+               ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+                     
+                """;
 
-        String expectedOutput = "Executing trend\n" +
-                "Ranking of most sold phone models last three months\n" + actualFormattedTrend;
+        String output = outContent.toString();
+        assertEquals(expectedOutput, output);
 
-        assertEquals(expectedOutput, outContent.toString());
+        HashMap<String, Integer> mostSoldPhoneModels = transactions.getRankingOfMostSoldPhoneModelsLastThreeMonths();
+        expectedOutput = """
+                ________________________________________________________________
+                |Model                         |Phones sold                   |
+                |------------------------------|------------------------------|
+                |iPhone15                      |4                             |
+                ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+                """;
+        assertEquals(expectedOutput, instructions.getFormattedTrendForTesting(mostSoldPhoneModels));
     }
 
     @Test
