@@ -1,6 +1,7 @@
 import controllers.FileProcessor;
 import controllers.InstructionController;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class Main {
@@ -9,13 +10,21 @@ public class Main {
         FileProcessor fileProcessor = new FileProcessor();
         System.out.println("File processing started");
 
-        fileProcessor.validateArguments(args);
+        if (!fileProcessor.validateArguments(args)) {
+            System.out.println("Invalid arguments");
+            return;
+        }
         InstructionController instructionController = new InstructionController();
 
         Arrays.sort(args);
         for (String instructionFilePath : args) {
             System.out.println("Processing file: " + instructionFilePath);
-            fileProcessor.processFile(instructionFilePath, instructionController);
+                try {
+                fileProcessor.processFile(instructionFilePath, instructionController);
+
+            } catch (IOException e) {
+                System.out.println("Error reading file: " + instructionFilePath);
+            }
         }
 
         System.out.println("File processed successfully");
