@@ -1,5 +1,3 @@
-package test;
-//TODO: Andrei. fix package name
 import controllers.Instructions;
 import models.Brand;
 import models.Inventory;
