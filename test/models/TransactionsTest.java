@@ -22,6 +22,7 @@ class TransactionsTest {
     static ResellerRegistry resellerRegistry;
     static ValidationUtils validationUtils;
     static String filePathExistent = "test/resources/test_instructions.txt";
+    static String filePath_deductPhones = "test/resources/test_instructions_reseller.txt";
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
 
@@ -72,7 +73,15 @@ class TransactionsTest {
 
     @Test
     void getRankingOfMostSoldPhoneModelsLastThreeMonths() {
-        //TODO: Andrei
+        FileProcessor fileProcessor = new FileProcessor();
+        try {
+            fileProcessor.processFile(filePath_deductPhones, instructionController);
+        } catch (IOException e) {
+            fail("Exception occurred before running tests: " + e.getMessage());
+        }
 
+        String actualResult = transactions.getRankingOfMostSoldPhoneModelsLastThreeMonths().toString();
+        String expectedOutput = "{iPhone15=4, S22=1}";
+        assertEquals(expectedOutput, actualResult);
     }
 }
