@@ -41,9 +41,4 @@ public class Reseller {
         Reseller reseller = (Reseller) o;
         return id == reseller.id;
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
