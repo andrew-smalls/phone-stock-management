@@ -1,5 +1,3 @@
-package test;
-
 import controllers.FileProcessor;
 import controllers.InstructionController;
 import org.junit.jupiter.api.AfterEach;
@@ -51,7 +49,7 @@ class FileProcessorTest {
             fileProcessor.processFile(filePathNonexistent, instructionController);
             fail("Exception should have been thrown");
         } catch (IOException e) {
-            assertEquals(filePathNonexistent.replace("/", "\\") + " (The system cannot find the file specified)", e.getMessage());
+            assertEquals(filePathNonexistent + " (No such file or directory)", e.getMessage());
         }
     }
     @Test

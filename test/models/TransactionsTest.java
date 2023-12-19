@@ -1,12 +1,9 @@
-package test.models;
+package models;
 
 import controllers.FileProcessor;
 import controllers.InstructionController;
 import controllers.Instructions;
 import controllers.ValidationUtils;
-import models.Inventory;
-import models.ResellerRegistry;
-import models.Transactions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +12,10 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class TransactionsTest {
     static InstructionController instructionController;
@@ -68,8 +67,7 @@ class TransactionsTest {
         String expectedOutput = """
                 Transactions
                 Transaction{timestamp=time, transactionType=ADD, brandName='Nokia', modelName='XR21', stock=10}
-                Transaction{timestamp=time, transactionType=ADD, brandName='Samsung', modelName='S22', stock=5}
-                """;
+                Transaction{timestamp=time, transactionType=ADD, brandName='Samsung', modelName='S22', stock=5}""";
 
         assertEquals(expectedOutput, replaced);
     }
@@ -82,7 +80,7 @@ class TransactionsTest {
         } catch (IOException e) {
             fail("Exception occurred before running tests: " + e.getMessage());
         }
-
+        transactions.logTransactionManually("Apple", "iPhone15", 1, TRANSACTION_TYPE.SALE, LocalDateTime.now().minusMonths(4));
         String actualResult = transactions.getRankingOfMostSoldPhoneModelsLastThreeMonths().toString();
         String expectedOutput = "{iPhone15=4, S22=1}";
         assertEquals(expectedOutput, actualResult);

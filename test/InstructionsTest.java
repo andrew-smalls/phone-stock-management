@@ -410,7 +410,7 @@ class InstructionsTest {
         String output = outContent.toString();
         assertEquals(expectedOutput, output);
 
-        // Invalid  case
+        // Invalid  case 1
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         System.setOut(System.out);
@@ -420,6 +420,54 @@ class InstructionsTest {
         expectedOutput = """
                 Executing assign phone[1, Apple, iPhone15, 4, asd]
                 Invalid number of arguments
+                Invalid arguments
+                """;
+
+        output = outContent.toString();
+        assertEquals(expectedOutput, output);
+
+        // Invalid  case 2
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        System.setOut(System.out);
+
+        instructions.assignPhone(new String[]{"asd", "Apple", "iPhone15", "4"});
+
+        expectedOutput = """
+                Executing assign phone[asd, Apple, iPhone15, 4]
+                Invalid reseller id argument
+                Invalid arguments
+                """;
+
+        output = outContent.toString();
+        assertEquals(expectedOutput, output);
+
+        // Invalid  case 3
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        System.setOut(System.out);
+
+        instructions.assignPhone(new String[]{"1", "Apple", "iPhone15", "-10"});
+
+        expectedOutput = """
+                Executing assign phone[1, Apple, iPhone15, -10]
+                Invalid quantity. Quantity must be a positive number.
+                Invalid arguments
+                """;
+
+        output = outContent.toString();
+        assertEquals(expectedOutput, output);
+
+        // Invalid  case 4
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        System.setOut(System.out);
+
+        instructions.assignPhone(new String[]{"1", "Apple", "iPhone15", "asd"});
+
+        expectedOutput = """
+                Executing assign phone[1, Apple, iPhone15, asd]
+                Invalid quantity argument
                 Invalid arguments
                 """;
 

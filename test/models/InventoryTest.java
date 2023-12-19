@@ -1,11 +1,8 @@
-package test.models;
+package models;
 
-import models.Inventory;
-import models.Brand;
-import models.PhoneModel;
-import models.Transactions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 

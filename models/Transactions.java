@@ -13,7 +13,10 @@ public class Transactions {
             System.out.println(transaction);
         }
     }
-
+    public void logTransactionManually(String brandName, String modelName, int stock, TRANSACTION_TYPE transactionType, LocalDateTime localDateTime) {
+        Transaction transaction = new Transaction(localDateTime, transactionType, brandName, modelName, stock);
+        transactions.add(transaction);
+    }
     public void logTransaction(String brandName, String modelName, int stock, TRANSACTION_TYPE transactionType) {
         LocalDateTime localDateTime = LocalDateTime.now();
         Transaction transaction = new Transaction(localDateTime, transactionType, brandName, modelName, stock);
