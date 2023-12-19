@@ -43,7 +43,11 @@ public class ValidationUtils {
             return false;
         }
         try {
-            Integer.parseInt(arguments[0]);
+            int result = Integer.parseInt(arguments[0]);
+            if (result < 0) {
+                System.out.println("Reseller id must be a positive number.");
+                return false;
+            }
         } catch (NumberFormatException e) {
             System.out.println("Invalid reseller id argument");
             return false;

@@ -12,7 +12,6 @@ public class ResellerRegistry {
     }
 
     public void showResellers() {
-        System.out.println("Resellers");
         for (Reseller reseller : resellers) {
             System.out.println(reseller);
         }

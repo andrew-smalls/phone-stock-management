@@ -1,6 +1,10 @@
 package controllers;
 
-import models.*;
+import models.Inventory;
+import models.PhoneModel;
+import models.ResellerRegistry;
+import models.TRANSACTION_TYPE;
+import models.Transactions;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -73,7 +77,6 @@ public class Instructions {
 
         transactions.logTransaction(brandName, modelName, updatedPhoneModel.getStock(), TRANSACTION_TYPE.UPDATE);
     }
-
 
     public void search(String[] arguments) {
         System.out.println("Executing search" + Arrays.toString(arguments));
