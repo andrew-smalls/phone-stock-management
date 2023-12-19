@@ -1,8 +1,18 @@
 package controllers;
 
+import models.Transactions;
+
 public class InstructionController {
 
-    private final Instructions instructions = new Instructions();
+    private final Instructions instructions;
+
+    public InstructionController() {
+        instructions = new Instructions();
+    }
+
+    public InstructionController(Instructions instructions) {
+        this.instructions = instructions;
+    }
 
     public void executeOption(String option, String[] arguments) {
         switch(option)

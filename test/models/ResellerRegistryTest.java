@@ -7,30 +7,30 @@ class ResellerRegistryTest {
 
     @Test
     void showResellers() {
-        //TDOO: Andrei
+        //TODO: Andrei
     }
 
     @Test
     void addReseller() {
-        //TDOO: Andrei
+        //TODO: Andrei
 
     }
 
     @Test
     void deleteReseller() {
-        //TDOO: Andrei
+        //TODO: Andrei
 
     }
 
     @Test
     void assignPhone() {
-        //TDOO: Andrei
+        //TODO: Andrei
 
     }
 
     @Test
     void deductStock() {
-        //TDOO: Andrei
+        //TODO: Andrei
 
     }
 }

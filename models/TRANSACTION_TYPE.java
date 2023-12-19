@@ -10,8 +10,4 @@ public enum TRANSACTION_TYPE {
 
     TRANSACTION_TYPE(String add) {
     }
-
-    public String getValue(TRANSACTION_TYPE transactionType) {
-        return transactionType.name();
-    }
 }

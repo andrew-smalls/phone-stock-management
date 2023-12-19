@@ -102,19 +102,19 @@ class InstructionsTest {
 
     @Test
     void listResellers() {
-        //TDOO: Andrei
+        //TODO: Andrei
 
     }
 
     @Test
     void addReseller() {
-        //TDOO: Andrei
+        //TODO: Andrei
 
     }
 
     @Test
     void deleteReseller() {
-        //TDOO: Andrei
+        //TODO: Andrei
 
     }
 

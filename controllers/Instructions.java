@@ -17,10 +17,24 @@ import java.util.Scanner;
 
 public class Instructions {
     public static final String ADMIN_PASSWORD = "admin";
-    private final Inventory inventory = new Inventory();
-    private final Transactions transactions = new Transactions();
-    private final ResellerRegistry resellerRegistry = new ResellerRegistry(inventory);
-    private final ValidationUtils validationUtils = new ValidationUtils();
+    private final Inventory inventory;
+    private final Transactions transactions;
+    private final ResellerRegistry resellerRegistry;
+    private final ValidationUtils validationUtils;
+
+    public Instructions() {
+        inventory = new Inventory();
+        transactions = new Transactions();
+        resellerRegistry = new ResellerRegistry(inventory);
+        validationUtils = new ValidationUtils();
+    }
+
+    public Instructions(Inventory inventory, Transactions transactions, ResellerRegistry resellerRegistry, ValidationUtils validationUtils) {
+        this.inventory = inventory;
+        this.transactions = transactions;
+        this.resellerRegistry = resellerRegistry;
+        this.validationUtils = validationUtils;
+    }
     public void list() {
         System.out.println("Executing list");
         inventory.getInventoryOverview();
