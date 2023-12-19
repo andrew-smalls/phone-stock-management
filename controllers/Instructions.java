@@ -144,6 +144,10 @@ public class Instructions {
         return stringBuilder;
     }
 
+    public String getFormattedTrendForTesting(HashMap<String, Integer> mostSoldPhoneModels) {
+        return getFormattedTrend(mostSoldPhoneModels).toString();
+    }
+
     public void history() {
         System.out.println("Executing history");
         transactions.showTransactions();

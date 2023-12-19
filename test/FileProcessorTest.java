@@ -1,3 +1,5 @@
+package test;
+
 import controllers.FileProcessor;
 import controllers.InstructionController;
 import org.junit.jupiter.api.AfterEach;

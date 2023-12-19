@@ -6,6 +6,7 @@ import java.util.*;
 public class Transactions {
 
     private final ArrayList<Transaction> transactions = new ArrayList<>();
+
     public void showTransactions() {
         System.out.println("Transactions");
         for (Transaction transaction : transactions) {

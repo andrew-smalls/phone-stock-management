@@ -1,9 +1,12 @@
-package models;
+package test.models;
 
 import controllers.FileProcessor;
 import controllers.InstructionController;
 import controllers.Instructions;
 import controllers.ValidationUtils;
+import models.Inventory;
+import models.ResellerRegistry;
+import models.Transactions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
