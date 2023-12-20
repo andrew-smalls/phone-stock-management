@@ -4,9 +4,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
 
+import static controllers.Instructions.ADMIN_PASSWORD;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InstructionControllerTest {
@@ -188,10 +191,16 @@ class InstructionControllerTest {
     void executeClear() {
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
+        String input = ADMIN_PASSWORD + "\n";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
         instructionController.executeOption("clear", new String[]{});
+
         String output = outContent.toString();
         String expectedOutput = """
                 Executing clear
+                Please enter the administrator password:
+                Password correct. Proceed with administrator privileges.
                 """;
         assertEquals(expectedOutput, output);
     }
