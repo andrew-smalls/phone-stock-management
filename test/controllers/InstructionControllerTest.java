@@ -48,7 +48,19 @@ class InstructionControllerTest {
         executeDeleteReseller();
 
         executeClear();
+
+        executeNothing();
     }
+
+    private void executeNothing() {
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        instructionController.executeOption("nothing", new String[]{});
+        String output = outContent.toString();
+        String expectedOutput = "Unprocessable option. Skipped: nothing\n";
+        assertEquals(expectedOutput, output);
+    }
+
     void executeAdd() {
         instructionController.executeOption("add", new String[]{"Nokia", "3310", "10"});
         String output = outContent.toString();
