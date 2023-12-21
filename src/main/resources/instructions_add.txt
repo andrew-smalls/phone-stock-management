@@ -1,0 +1,6 @@
+add Nokia XR21 10
+add Samsung S22 5
+list
+add iPhone 15 2
+add Xiaomi 11 3
+list

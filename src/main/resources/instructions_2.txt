@@ -1,0 +1,4 @@
+update Nokia XR21 2
+update Nokia XR21 -6
+list
+search Nokia XR21

@@ -1,0 +1,18 @@
+add Nokia XR21 10
+add Samsung S22 5
+add Apple iPhone15 5
+list
+add_reseller 1 iStore
+add_reseller 2 AndroidLovers
+add_reseller 3 SafeDeleteReseller
+list_resellers
+assign_phone 1 Apple iPhone15 4
+assign_phone 2 Samsung S22 2
+list
+deduct_stock 1 Apple iPhone15 2
+deduct_stock 2 Samsung S22 1
+deduct_stock 1 Apple iPhone15 2
+history
+trend
+delete_reseller 2
+delete_reseller 3
