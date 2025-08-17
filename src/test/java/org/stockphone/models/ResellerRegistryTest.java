@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -103,7 +104,7 @@ class ResellerRegistryTest {
                 Transaction{timestamp=time, transactionType=RESELLER_RESERVE, brandName='Brand_1', modelName='Model_1', stock=-5}
                 Transaction{timestamp=time, transactionType=RESELLER_RESERVE, brandName='Brand_1', modelName='Model_1', stock=-2}    
                 """;
-        assertEquals(expected, replaced);
+        assertThat(replaced).isEqualToNormalizingNewlines(expected);
 
         // Invalid case: wrong id
         outContent = new ByteArrayOutputStream();
@@ -112,7 +113,7 @@ class ResellerRegistryTest {
         resellerRegistry.assignPhone(new String[]{"0", "Brand_1", "Model_1", "5"}, transactions);
         output = outContent.toString();
         expected = "Reseller ID 0 not found. Please verify the reseller ID.\n";
-        assertEquals(expected, output);
+        assertThat(output).isEqualToNormalizingNewlines(expected);
 
         // Invalid case: wrong brand name
         outContent = new ByteArrayOutputStream();
@@ -121,7 +122,7 @@ class ResellerRegistryTest {
         resellerRegistry.assignPhone(new String[]{"1", "Brand_3", "Model_1", "5"}, transactions);
         output = outContent.toString();
         expected = "Brand Brand_3 not found. Please verify the brand name.\n";
-        assertEquals(expected, output);
+        assertThat(output).isEqualToNormalizingNewlines(expected);
 
         // Invalid case: wrong model name
         outContent = new ByteArrayOutputStream();
@@ -133,7 +134,7 @@ class ResellerRegistryTest {
                 Insufficient stock for Brand_1 Model_1.
                 Requested: 5. Available: 3.
                 """;
-        assertEquals(expected, output);
+        assertThat(output).isEqualToNormalizingNewlines(expected);
 
         // Invalid case: insufficient stock
         outContent = new ByteArrayOutputStream();
@@ -142,7 +143,7 @@ class ResellerRegistryTest {
         resellerRegistry.assignPhone(new String[]{"1", "Brand_1", "Model_2", "11"}, transactions);
         output = outContent.toString();
         expected = "Model Model_2 for brand Brand_1 not found. Please verify the model name.\n";
-        assertEquals(expected, output);
+        assertThat(output).isEqualToNormalizingNewlines(expected);
     }
 
     @Test
@@ -165,7 +166,7 @@ class ResellerRegistryTest {
                 Transaction{timestamp=time, transactionType=RESELLER_RESERVE, brandName='Brand_1', modelName='Model_1', stock=-5}
                 Transaction{timestamp=time, transactionType=SALE, brandName='Brand_1', modelName='Model_1', stock=2}
                 """;
-        assertEquals(expected, replaced);
+        assertThat(replaced).isEqualToNormalizingNewlines(expected);
 
         // Invalid case: wrong id
         outContent = new ByteArrayOutputStream();
@@ -174,7 +175,7 @@ class ResellerRegistryTest {
         resellerRegistry.deductStock(new String[]{"0", "Brand_1", "Model_1", "1"}, transactions);
         output = outContent.toString();
         expected = "Reseller ID 0 not found. Please verify the reseller ID.\n";
-        assertEquals(expected, output);
+        assertThat(output).isEqualToNormalizingNewlines(expected);
 
         // Invalid case: wrong brand / model or insufficient stock
         outContent = new ByteArrayOutputStream();
@@ -183,7 +184,7 @@ class ResellerRegistryTest {
         resellerRegistry.deductStock(new String[]{"1", "Brand_3", "Model_1", "1"}, transactions);
         output = outContent.toString();
         expected = "Brand Brand_3 not found. Please verify the brand name.\n";
-        assertEquals(expected, output);
+        assertThat(output).isEqualToNormalizingNewlines(expected);
     }
 
 }

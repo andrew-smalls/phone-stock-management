@@ -8,6 +8,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class FileProcessorTest {
     static InstructionController instructionController;
 
@@ -48,7 +50,7 @@ class FileProcessorTest {
             fileProcessor.processFile(filePathNonexistent, instructionController);
             Assertions.fail("Exception should have been thrown");
         } catch (IOException e) {
-            Assertions.assertEquals(filePathNonexistent + " (No such file or directory)", e.getMessage());
+            assertThat(e.getMessage()).isEqualToNormalizingNewlines(filePathNonexistent.replace("/", "\\") + " (The system cannot find the file specified)");
         }
     }
     @Test

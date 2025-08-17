@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -68,9 +69,10 @@ class TransactionsTest {
         String expectedOutput = """
                 Transactions
                 Transaction{timestamp=time, transactionType=ADD, brandName='Nokia', modelName='XR21', stock=10}
-                Transaction{timestamp=time, transactionType=ADD, brandName='Samsung', modelName='S22', stock=5}""";
+                Transaction{timestamp=time, transactionType=ADD, brandName='Samsung', modelName='S22', stock=5}
+                """;
 
-        assertEquals(expectedOutput, replaced);
+        assertThat(replaced).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     @Test

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 //Gets 100% coverage for Brand.java, PhoneModel.java, and Inventory.java
@@ -48,7 +49,7 @@ class InventoryTest {
                 "|OnePlus             |9 Pro                         |0         |\n" +
                 "‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾\n" +
                 "\n";
-        assertEquals(expectedOutput, outputStreamCaptor.toString());
+        assertThat(outputStreamCaptor.toString()).isEqualToNormalizingNewlines(expectedOutput);
     }
     @Test
     void addBrand() {
@@ -58,7 +59,7 @@ class InventoryTest {
         inventory.addBrand("Apple", "iPhone 13");
         System.setOut(System.out);
         String expectedOutput = "Brand already exists in inventory.\n";
-        assertEquals(expectedOutput, outputStreamCaptor.toString());
+        assertThat(outputStreamCaptor.toString()).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     @Test

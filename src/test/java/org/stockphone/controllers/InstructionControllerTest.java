@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.stockphone.controllers.Instructions.ADMIN_PASSWORD;
 
@@ -59,7 +60,7 @@ class InstructionControllerTest {
         instructionController.executeOption(null, new String[]{});
         String output = outContent.toString();
         String expectedOutput = "Unprocessable option. Skipped.\n";
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     private void executeUnprocessableOption() {
@@ -68,14 +69,14 @@ class InstructionControllerTest {
         instructionController.executeOption("nothing", new String[]{});
         String output = outContent.toString();
         String expectedOutput = "Unprocessable option. Skipped: nothing\n";
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     void executeAdd() {
         instructionController.executeOption("add", new String[]{"Nokia", "3310", "10"});
         String output = outContent.toString();
         String expectedOutput = "Executing add[Nokia, 3310, 10]\n";
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     void executeUpdate() {
@@ -84,7 +85,7 @@ class InstructionControllerTest {
         instructionController.executeOption("update", new String[]{"Nokia", "3310", "5"});
         String output = outContent.toString();
         String expectedOutput = "Executing update[Nokia, 3310, 5]\n";
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     void executeList() {
@@ -101,7 +102,7 @@ class InstructionControllerTest {
                 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
                 
                 """;
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     void executeSearch() {
@@ -114,7 +115,7 @@ class InstructionControllerTest {
                 Found in inventory:
                 Brand: Nokia, Model: 3310, Stock: 15
                 """;
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     void executeHistory() {
@@ -132,7 +133,7 @@ class InstructionControllerTest {
                 Transaction{timestamp=time, transactionType=UPDATE, brandName='Nokia', modelName='3310', stock=15}
                 """;
 
-        assertEquals(expectedOutput, replaced);
+        assertThat(replaced).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     void executeAddReseller() {
@@ -143,7 +144,7 @@ class InstructionControllerTest {
         String expectedOutput = """
                 Executing add reseller[1, reseller1]
                 """;
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     void executeListResellers() {
@@ -155,7 +156,7 @@ class InstructionControllerTest {
                 Executing list resellers
                 Reseller{id=1, name='reseller1'}
                 """;
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     void executeAssignPhone() {
@@ -166,7 +167,7 @@ class InstructionControllerTest {
         String expectedOutput = """
                 Executing assign phone[1, Nokia, 3310, 1]
                 """;
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     void executeDeductStock() {
@@ -177,7 +178,7 @@ class InstructionControllerTest {
         String expectedOutput = """
                 Executing deduct stock[1, Nokia, 3310, 1]
                 """;
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     void executeTrend() {
@@ -195,7 +196,7 @@ class InstructionControllerTest {
                 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
                 
                 """;
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     void executeDeleteReseller() {
@@ -207,7 +208,7 @@ class InstructionControllerTest {
                 Executing delete reseller[1]
                 Reseller deleted
                 """;
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     void executeClear() {
@@ -224,6 +225,6 @@ class InstructionControllerTest {
                 Please enter the administrator password:
                 Password correct. Proceed with administrator privileges.
                 """;
-        assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 }

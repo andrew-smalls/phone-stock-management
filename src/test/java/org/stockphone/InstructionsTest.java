@@ -1,5 +1,6 @@
 package org.stockphone;
-import org.junit.jupiter.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.stockphone.controllers.Instructions;
@@ -59,7 +60,7 @@ class InstructionsTest {
                 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
                 
                 """;
-        Assertions.assertEquals(expectedOutput, outputStreamCaptor.toString());
+        assertThat(outputStreamCaptor.toString()).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     @Test
@@ -77,7 +78,7 @@ class InstructionsTest {
         System.setOut(System.out);
         instructions.add(validArguments);
         String expectedOutput = "Executing add" + Arrays.toString(validArguments) + "\n";
-        Assertions.assertEquals(expectedOutput, outputStreamCaptor.toString());
+        assertThat(outputStreamCaptor.toString()).isEqualToNormalizingNewlines(expectedOutput);
 
         //create new output stream to capture the printed output
         ByteArrayOutputStream outputStreamCaptor2 = new ByteArrayOutputStream();
@@ -85,7 +86,7 @@ class InstructionsTest {
         System.setOut(System.out);
         instructions.add(invalidArguments);
         String expectedOutput2 = "Executing add" + Arrays.toString(invalidArguments) + "\nInvalid number of arguments\n";
-        Assertions.assertEquals(expectedOutput2, outputStreamCaptor2.toString());
+        assertThat(outputStreamCaptor2.toString()).isEqualToNormalizingNewlines(expectedOutput2);
         instructions.add(invalidArguments);
 
         //create new output stream to capture the printed output
@@ -94,8 +95,7 @@ class InstructionsTest {
         System.setOut(System.out);
         instructions.add(invalidArguments2);
         String expectedOutput3 = "Executing add" + Arrays.toString(invalidArguments2) + "\nInvalid stock argument\n";
-        Assertions.assertEquals(expectedOutput3, outputStreamCaptor3.toString());
-
+        assertThat(outputStreamCaptor3.toString()).isEqualToNormalizingNewlines(expectedOutput3);
     }
 
     @Test
@@ -111,7 +111,7 @@ class InstructionsTest {
 
         instructions.update(validArguments2);
         String expectedOutput1 = "Executing update" + Arrays.toString(validArguments2) + "\n";
-        Assertions.assertEquals(expectedOutput1, outputStreamCaptor.toString());
+        assertThat(outputStreamCaptor.toString()).isEqualToNormalizingNewlines(expectedOutput1);
 
         // Invalid case 1
 
@@ -124,7 +124,7 @@ class InstructionsTest {
                 Executing update[Motorola, Moto G]
                 Invalid number of arguments
                 """;
-        Assertions.assertEquals(expectedOutput2, outputStreamCaptor2.toString());
+        assertThat(outputStreamCaptor2.toString()).isEqualToNormalizingNewlines(expectedOutput2);
 
         // Invalid case 2
         outputStreamCaptor2 = new ByteArrayOutputStream();
@@ -137,7 +137,7 @@ class InstructionsTest {
                 Model does not exist in inventory
                 Update failed
                 """;
-        Assertions.assertEquals(expectedOutput2, outputStreamCaptor2.toString());
+        assertThat(outputStreamCaptor2.toString()).isEqualToNormalizingNewlines(expectedOutput2);
     }
 
     @Test
@@ -156,7 +156,7 @@ class InstructionsTest {
         instructions.search(existentPhone);
         String expectedOutput = "Executing search" + Arrays.toString(existentPhone) + "\n" +
                 "Found in inventory:\nBrand: Samsung, Model: Galaxy S21, Stock: 10\n";
-        Assertions.assertEquals(expectedOutput, outputStreamCaptor.toString());
+        assertThat(outputStreamCaptor.toString()).isEqualToNormalizingNewlines(expectedOutput);
 
         ByteArrayOutputStream outputStreamCaptor2 = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor2));
@@ -164,7 +164,7 @@ class InstructionsTest {
         instructions.search(nonExistentPhone);
         String expectedOutput2 = "Executing search" + Arrays.toString(nonExistentPhone) + "\n" +
                 "Invalid number of arguments\n";
-        Assertions.assertEquals(expectedOutput2, outputStreamCaptor2.toString());
+        assertThat(outputStreamCaptor2.toString()).isEqualToNormalizingNewlines(expectedOutput2);
     }
 
     @Test
@@ -181,8 +181,7 @@ class InstructionsTest {
                 Please enter the administrator password:
                 Password correct. Proceed with administrator privileges.
                 """;
-        Assertions.assertEquals(expectedOutput, outContent.toString());
-
+        assertThat(outContent.toString()).isEqualToNormalizingNewlines(expectedOutput);
         InputStream in2 = new ByteArrayInputStream(wrongInput.getBytes());
         System.setIn(in2);
         ByteArrayOutputStream outContent2 = new ByteArrayOutputStream();
@@ -193,7 +192,7 @@ class InstructionsTest {
                 Please enter the administrator password:
                 Incorrect password. Access denied.
                 """;
-        Assertions.assertEquals(expectedOutput2, outContent2.toString());
+        assertThat(outContent2.toString()).isEqualToNormalizingNewlines(expectedOutput2);
     }
 
     @Test
@@ -227,7 +226,7 @@ class InstructionsTest {
                 """;
 
         String output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
 
         HashMap<String, Integer> mostSoldPhoneModels = transactions.getRankingOfMostSoldPhoneModelsLastThreeMonths();
         expectedOutput = """
@@ -274,7 +273,7 @@ class InstructionsTest {
         String output = outContent.toString();
         String regexPattern = "timestamp=[^,]+";
         String replaced = output.replaceAll(regexPattern, "timestamp=time");
-        Assertions.assertEquals(expectedOutput, replaced);
+        assertThat(replaced).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     @Test
@@ -296,7 +295,7 @@ class InstructionsTest {
                """;
 
         String output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
 
         // Invalid case
         outContent = new ByteArrayOutputStream();
@@ -311,7 +310,7 @@ class InstructionsTest {
                """;
 
         output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
 
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
@@ -325,7 +324,7 @@ class InstructionsTest {
                """;
 
         output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     @Test
@@ -347,7 +346,7 @@ class InstructionsTest {
                 Reseller deleted
                 """;
         String output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
 
         // Invalid case 1
         outContent = new ByteArrayOutputStream();
@@ -360,7 +359,7 @@ class InstructionsTest {
                Invalid arguments
                """;
         output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
 
         // Invalid case 2
         outContent = new ByteArrayOutputStream();
@@ -373,7 +372,7 @@ class InstructionsTest {
                 Invalid arguments
                 """;
         output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
 
         // Invalid case 3
         outContent = new ByteArrayOutputStream();
@@ -386,7 +385,7 @@ class InstructionsTest {
                 Invalid arguments
                 """;
         output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     @Test
@@ -410,7 +409,7 @@ class InstructionsTest {
                 """;
 
         String output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
 
         // Invalid  case 1
         outContent = new ByteArrayOutputStream();
@@ -426,7 +425,7 @@ class InstructionsTest {
                 """;
 
         output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
 
         // Invalid  case 2
         outContent = new ByteArrayOutputStream();
@@ -442,7 +441,7 @@ class InstructionsTest {
                 """;
 
         output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
 
         // Invalid  case 3
         outContent = new ByteArrayOutputStream();
@@ -458,7 +457,7 @@ class InstructionsTest {
                 """;
 
         output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
 
         // Invalid  case 4
         outContent = new ByteArrayOutputStream();
@@ -474,7 +473,7 @@ class InstructionsTest {
                 """;
 
         output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 
     @Test
@@ -500,7 +499,7 @@ class InstructionsTest {
                 """;
 
         String output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
 
         // Invalid  case
         outContent = new ByteArrayOutputStream();
@@ -516,6 +515,6 @@ class InstructionsTest {
                 """;
 
         output = outContent.toString();
-        Assertions.assertEquals(expectedOutput, output);
+        assertThat(output).isEqualToNormalizingNewlines(expectedOutput);
     }
 }
