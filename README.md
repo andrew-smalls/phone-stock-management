@@ -1,7 +1,11 @@
 # phone-stock-management
 
+## Purpose
+This project was created as a mock application with the sole objective of achieving 100% test coverage. All features and code are designed to demonstrate comprehensive unit and integration testing practices in a Java Maven environment.
+
 ## Description
 This is a simple phone stock management system. It is possible to add, update, delete and list phoneModels. It is also possible to search for phoneModels by name, brand and price.
+All functionality is covered by automated tests.
 
 ## Usage
 1. Download the JAR file from [here](https://some-link.com).
@@ -39,3 +43,14 @@ ________________________________________________________________
 |Xiaomi              |11                            |3         |
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 ```
+
+## Testing
+- All source code is covered by unit and integration tests.
+- To run tests:
+    ```
+    mvn test
+    ```
+- The project demonstrates best practices for writing tests in Java.
+
+## Note
+This application is not intended for production use. Its primary purpose is to showcase testing strategies and achieve 100% code coverage.
